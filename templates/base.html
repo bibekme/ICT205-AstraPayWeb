@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AstraPay – {% block title %}{% endblock %}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f0f4fa;
+    --surface: #ffffff;
+    --surface2: #e8eef8;
+    --border: #dce4f0;
+    --accent: #0066ff;
+    --accent2: #6d28d9;
+    --text: #0f1e35;
+    --muted: #6b82a0;
+    --danger: #dc2626;
+    --success: #059669;
+    --warning: #d97706;
+    --sidebar-w: 240px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    display: flex;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    width: var(--sidebar-w);
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    box-shadow: 2px 0 12px rgba(0,0,0,0.06);
+    display: flex;
+    flex-direction: column;
+    padding: 28px 0;
+    position: fixed;
+    height: 100vh;
+    z-index: 100;
+  }
+
+  .sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 24px 28px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 20px;
+  }
+
+  .brand-icon {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .brand-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent), #a78bfa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .nav-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0 24px;
+    margin-bottom: 8px;
+    margin-top: 12px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 24px;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s;
+    border-left: 3px solid transparent;
+    margin: 1px 0;
+  }
+
+  .nav-item:hover {
+    color: var(--text);
+    background: rgba(0,0,0,0.04);
+  }
+
+  .nav-item.active {
+    color: var(--accent);
+    background: rgba(0, 102, 255, 0.07);
+    border-left-color: var(--accent);
+  }
+
+  .nav-item .icon { font-size: 18px; width: 20px; text-align: center; }
+
+  .sidebar-footer {
+    margin-top: auto;
+    padding: 20px 24px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .user-pill {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: var(--surface2);
+    border-radius: 12px;
+    margin-bottom: 12px;
+  }
+
+  .user-avatar {
+    width: 34px;
+    height: 34px;
+    background: linear-gradient(135deg, var(--accent2), var(--accent));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .user-info .name { font-size: 13px; font-weight: 600; }
+  .user-info .role { font-size: 11px; color: var(--muted); }
+
+  .logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13px;
+    padding: 8px 4px;
+    transition: color 0.2s;
+  }
+  .logout-btn:hover { color: var(--danger); }
+
+  /* Main content */
+  .main {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    padding: 36px 40px;
+    max-width: calc(100vw - var(--sidebar-w));
+  }
+
+  .page-header {
+    margin-bottom: 32px;
+  }
+
+  .page-header h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+
+  .page-header p {
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  /* Cards */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+  }
+
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  /* Stat cards */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 22px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat-card::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 80px; height: 80px;
+    border-radius: 0 0 0 80px;
+    opacity: 0.08;
+  }
+
+  .stat-card.accent::after { background: var(--accent); }
+  .stat-card.purple::after { background: var(--accent2); }
+  .stat-card.green::after { background: var(--success); }
+
+  .stat-label { font-size: 12px; color: var(--muted); font-weight: 500; margin-bottom: 8px; }
+  .stat-value { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; }
+  .stat-value.accent { color: var(--accent); }
+  .stat-value.purple { color: #a78bfa; }
+  .stat-value.green { color: var(--success); }
+  .stat-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+  /* Table */
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 10px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 13px 16px;
+    font-size: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(0,0,0,0.02); }
+
+  /* Badges */
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .badge-green { background: rgba(5,150,105,0.1); color: var(--success); }
+  .badge-blue { background: rgba(0,102,255,0.1); color: var(--accent); }
+  .badge-red { background: rgba(220,38,38,0.1); color: var(--danger); }
+
+  /* Forms */
+  .form-group { margin-bottom: 20px; }
+  label { display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  input[type=text], input[type=email], input[type=number], textarea {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+  input:focus, textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.08);
+  }
+  input::placeholder, textarea::placeholder { color: var(--muted); }
+  textarea { resize: vertical; min-height: 100px; }
+
+  .btn {
+    padding: 12px 28px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.03em;
+    transition: opacity 0.2s, transform 0.1s;
+  }
+  .btn:hover { opacity: 0.9; }
+  .btn:active { transform: scale(0.98); }
+
+  .alert {
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+  .alert-success { background: rgba(5,150,105,0.08); border: 1px solid rgba(5,150,105,0.2); color: var(--success); }
+  .alert-danger { background: rgba(220,38,38,0.08); border: 1px solid rgba(220,38,38,0.2); color: var(--danger); }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-icon">₳</div>
+    <span class="brand-name">AstraPay</span>
+  </div>
+
+  <div class="nav-label">Main Menu</div>
+  <a href="/dashboard" class="nav-item {% if request.endpoint == 'dashboard' %}active{% endif %}">
+    <span class="icon">⬡</span> Dashboard
+  </a>
+  <a href="/transfer" class="nav-item {% if request.endpoint == 'transfer' %}active{% endif %}">
+    <span class="icon">↗</span> Transfer Funds
+  </a>
+  <a href="/profile" class="nav-item {% if request.endpoint == 'profile' %}active{% endif %}">
+    <span class="icon">◎</span> My Profile
+  </a>
+
+  <div class="sidebar-footer">
+    <div class="user-pill">
+      <div class="user-avatar">{{ username[0].upper() }}</div>
+      <div class="user-info">
+        <div class="name">{{ username }}</div>
+        <div class="role">Account Holder</div>
+      </div>
+    </div>
+    <a href="/logout" class="logout-btn">⏻ Sign out</a>
+  </div>
+</aside>
+
+<main class="main">
+  {% block content %}{% endblock %}
+</main>
+
+</body>
+</html>

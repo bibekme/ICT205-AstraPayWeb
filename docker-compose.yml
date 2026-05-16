@@ -1,0 +1,36 @@
+services:
+  astrapay_db:
+    image: postgres:15
+    container_name: astrapay_db
+    environment:
+      POSTGRES_DB: astrapay
+      POSTGRES_USER: astrapay
+      POSTGRES_PASSWORD: astrapay123
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U astrapay"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  web:
+    build: .
+    container_name: astrapay_web
+    ports:
+      - "5050:5000"
+    environment:
+      DB_NAME: astrapay
+      DB_USER: astrapay
+      DB_PASS: astrapay123
+      DB_HOST: astrapay_db
+      DB_PORT: 5432
+    depends_on:
+      astrapay_db:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  pgdata:

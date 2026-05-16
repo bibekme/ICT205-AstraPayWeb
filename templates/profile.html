@@ -1,0 +1,97 @@
+{% extends "base.html" %} {% block title %}My Profile{% endblock %} {% block
+content %}
+<div class="page-header">
+  <h1>My Profile</h1>
+  <p>Manage your AstraPay account details.</p>
+</div>
+
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title">Edit Profile</div>
+    <form method="POST">
+      <div class="form-group">
+        <label>Email Address</label>
+        <input
+          type="email"
+          name="email"
+          value="{{ user.email or '' }}"
+          placeholder="you@example.com"
+        />
+      </div>
+      <div class="form-group">
+        <label>Bio</label>
+        <textarea name="bio" placeholder="Tell us about yourself...">
+{{ user.bio or '' }}</textarea
+        >
+      </div>
+      <button type="submit" class="btn">Save Changes</button>
+    </form>
+  </div>
+
+  <div>
+    <div class="card" style="margin-bottom: 16px">
+      <div class="card-title">Account Info</div>
+      <div
+        style="
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          margin-bottom: 20px;
+        "
+      >
+        <div
+          style="
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--accent2), var(--accent));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            font-family: &quot;Syne&quot;, sans-serif;
+          "
+        >
+          {{ username[0].upper() }}
+        </div>
+        <div>
+          <div
+            style="
+              font-family: &quot;Syne&quot;, sans-serif;
+              font-size: 18px;
+              font-weight: 800;
+            "
+          >
+            {{ username }}
+          </div>
+          <div style="color: var(--muted); font-size: 13px">
+            {{ user.email or 'No email set' }}
+          </div>
+        </div>
+      </div>
+      <div style="color: var(--muted); font-size: 13px; line-height: 1.6">
+        <div style="margin-bottom: 6px">
+          <span style="color: var(--text)">Account ID:</span> AP-{{ user.id }}
+        </div>
+        <div style="margin-bottom: 6px">
+          <span style="color: var(--text)">Balance:</span> ${{
+          "%.2f"|format(user.balance) }} AUD
+        </div>
+        <div>
+          <span style="color: var(--text)">Member since:</span> {{
+          user.created_at.strftime('%B %Y') if user.created_at else '–' }}
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">About Me</div>
+      <!-- VULNERABLE: bio rendered with | safe — no escaping (Stored XSS) -->
+      <div style="font-size: 14px; color: var(--muted); line-height: 1.7">
+        {{ user.bio | safe if user.bio else 'No bio added yet.' }}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
