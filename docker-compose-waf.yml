@@ -89,9 +89,6 @@ services:
       - CHAOS_ADDR=${SUBNET_PREFIX}.10
     ulimits:
       nofile: 131072
-    ports:
-      - 80:80
-    network_mode: host
   luigi:
     container_name: safeline-luigi
     restart: always
