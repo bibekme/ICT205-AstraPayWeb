@@ -20,7 +20,7 @@ services:
     build: .
     container_name: astrapay_web
     ports:
-      - "127.0.0.1:5050:5000"
+      - "127.0.0.1:5050:5050"
     environment:
       DB_NAME: astrapay
       DB_USER: astrapay
