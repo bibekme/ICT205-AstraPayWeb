@@ -31,14 +31,6 @@ services:
       astrapay_db:
         condition: service_healthy
     restart: unless-stopped
-    networks:
-      - default
-      - safeline-ce # ← join safeline network
 
 volumes:
   pgdata:
-
-networks:
-  default: # original network
-  safeline-ce: # ← declare as external
-    external: true
