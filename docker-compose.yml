@@ -7,8 +7,8 @@ services:
       POSTGRES_USER: astrapay
       POSTGRES_PASSWORD: astrapay123
     ports:
-      # - "5432:5432"
-      - "127.0.0.1:5432:5432"
+      - "5432:5432"
+      # - "127.0.0.1:5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -21,8 +21,8 @@ services:
     build: .
     container_name: astrapay_web
     ports:
-      # - "5050:5050"
-      - "127.0.0.1:5050:5050"
+      - "5050:5050"
+      # - "127.0.0.1:5050:5050"
     environment:
       DB_NAME: astrapay
       DB_USER: astrapay
